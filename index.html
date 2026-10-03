@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bulk Image Resizer Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Bulk Image Resizer Studio</h1>
+    <p>Resize product photos in your browser. Nothing is uploaded anywhere.</p>
+  </header>
+
+  <main class="layout">
+    <!-- Settings panel -->
+    <aside class="panel settings">
+      <h2>Output settings</h2>
+
+      <div class="row two">
+        <label>Width (px)<input id="width" type="number" min="1" max="8000" value="1000"></label>
+        <label>Height (px)<input id="height" type="number" min="1" max="8000" value="1000"></label>
+      </div>
+      <label class="check"><input id="keepRatio" type="checkbox"> Maintain aspect ratio (based on first image)</label>
+
+      <fieldset>
+        <legend>Resize mode</legend>
+        <label class="radio"><input type="radio" name="mode" value="fit" checked><span><b>Fit</b> Whole image visible, padded to size</span></label>
+        <label class="radio"><input type="radio" name="mode" value="crop"><span><b>Crop</b> Fills the size, edges trimmed</span></label>
+        <label class="radio"><input type="radio" name="mode" value="stretch"><span><b>Stretch</b> Forced to width and height</span></label>
+      </fieldset>
+
+      <label>Output format
+        <select id="format">
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WEBP</option>
+        </select>
+      </label>
+      <label>Quality: <b id="qualityVal">90</b>%
+        <input id="quality" type="range" min="10" max="100" value="90">
+      </label>
+
+      <div class="row two">
+        <label>Background<input id="bg" type="color" value="#ffffff"></label>
+        <label class="check bottom"><input id="transparent" type="checkbox"> Transparent</label>
+      </div>
+      <p class="hint" id="bgHint"></p>
+
+      <button id="resizeBtn" class="btn primary" disabled>Resize all images</button>
+      <button id="zipBtn" class="btn" disabled>Download all as ZIP</button>
+      <div id="progress" class="progress" hidden>
+        <div class="bar"><span id="bar"></span></div>
+        <small id="progressText"></small>
+      </div>
+    </aside>
+
+    <!-- Upload + list -->
+    <section class="content">
+      <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose images">
+        <p><b>Drop images here</b> or click to browse</p>
+        <small>JPG, PNG or WEBP. Select as many as you like.</small>
+        <input id="fileInput" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" multiple hidden>
+      </div>
+
+      <div class="listhead">
+        <h2>Images <span id="count">(0)</span></h2>
+        <button id="clearBtn" class="btn small" disabled>Clear all</button>
+      </div>
+      <div id="list" class="list"><p class="empty">No images yet. Add some above to get started.</p></div>
+    </section>
+  </main>
+
+  <!-- Preview dialog -->
+  <dialog id="preview">
+    <div class="dlghead"><b id="pvTitle"></b><button id="pvClose" class="btn small">Close</button></div>
+    <div class="compare">
+      <figure><img id="pvOrig" alt="Original"><figcaption id="pvOrigInfo"></figcaption></figure>
+      <figure><img id="pvNew" alt="Resized"><figcaption id="pvNewInfo"></figcaption></figure>
+    </div>
+  </dialog>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
